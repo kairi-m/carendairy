@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>多機能カレンダー</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1 id="monthYear"></h1>
+      <div>
+        <button onclick="changeMonth(-1)" class="button">←</button>
+        <button onclick="changeMonth(1)" class="button">→</button>
+      </div>
+    </header>
+
+    <div id="aiSearchSection">
+      <h2>AI予定検索</h2>
+      <input type="text" id="aiQuery" placeholder="例：埼玉県の夏祭りの日程">
+      <button onclick="searchWithAI()" class="button">検索</button>
+      <div id="aiResults"></div>
+    </div>
+
+    <div style="margin: 20px 0;">
+      <a href="diary-list.html" class="button">📖 日記一覧を見る</a>
+    </div>
+
+    <div>
+      <button onclick="toggleDisplay('categorySettings')" class="button">カテゴリー設定</button>
+      <button onclick="toggleDisplay('jobSettings')" class="button">バイト設定</button>
+    </div>
+
+    <p id="salaryDisplay" style="margin: 10px 0; font-weight: bold;"></p>
+
+    <div id="categorySettings" style="display: none;">
+      <p>※ カテゴリは最大10個まで設定可能です</p>
+      <input type="text" id="newCategoryName" placeholder="カテゴリ名">
+      <select id="newCategoryColor">
+        <option value="#1abc9c">緑</option>
+        <option value="#e67e22">オレンジ</option>
+        <option value="#34495e">グレー</option>
+        <option value="#d35400">赤茶</option>
+        <option value="#8e44ad">紫</option>
+      </select>
+      <button onclick="addCategory(event)" class="button">追加</button>
+      <ul id="categoryList"></ul>
+    </div>
+
+    <div id="jobSettings" style="display: none;">
+      <input type="text" id="jobName" placeholder="バイト名">
+      <input type="number" id="jobWage" placeholder="時給 (円)" min="0">
+      <input type="number" id="jobUnit" placeholder="何分単位 (例: 15)" min="1">
+      <button onclick="addJob()" class="button">追加</button>
+      <ul id="jobList"></ul>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>日</th><th>月</th><th>火</th><th>水</th><th>木</th><th>金</th><th>土</th>
+        </tr>
+      </thead>
+      <tbody id="calendar-body"></tbody>
+    </table>
+
+    <div id="eventForm" style="display:none;">
+      <h2 id="selectedDate">予定追加</h2>
+      <select id="eventCategory" onchange="toggleJobSelect()"></select>
+      <select id="jobSelector" style="display:none;"></select>
+      <input type="text" id="eventTitle" placeholder="タイトル">
+      <input type="time" id="eventStart">
+      <input type="time" id="eventEnd">
+      <textarea id="eventMemo" placeholder="メモ（任意）"></textarea>
+      <button onclick="saveEvent()" class="button">保存</button>
+      <button onclick="closeEventForm()" class="button">閉じる</button>
+    </div>
+
+    <div id="diaryForm" style="display:none;">
+      <h2 id="selectedDiaryDate">日記入力</h2>
+      <input type="text" id="breakfast" placeholder="朝食">
+      <input type="text" id="lunch" placeholder="昼食">
+      <input type="text" id="dinner" placeholder="夕食">
+      <input type="time" id="wakeUp" placeholder="起床時間">
+      <input type="time" id="sleep" placeholder="就寝時間">
+      <input type="number" id="exercise" placeholder="運動時間（分）">
+      <textarea id="notes" placeholder="活動記録"></textarea>
+      <button onclick="saveDiary()" class="button">保存</button>
+      <button onclick="closeDiaryForm()" class="button">閉じる</button>
+    </div>
+  </div>
+
+  <script>
+    function toggleDisplay(id) {
+      const elem = document.getElementById(id);
+      elem.style.display = (elem.style.display === "none") ? "block" : "none";
+    }
+  </script>
+  <script src="script.js"></script>
+</body>
+</html>
