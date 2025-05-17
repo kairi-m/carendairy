@@ -1,6 +1,4 @@
-// goals-index.js
-
-const goalContainer = document.getElementById("goalContainer");
+const homeGoalContainer = document.getElementById("goalContainer");
 let goals = JSON.parse(localStorage.getItem("goals") || "[]");
 
 function saveGoals() {
@@ -8,8 +6,8 @@ function saveGoals() {
 }
 
 function renderGoals() {
-  if (!goalContainer) return;
-  goalContainer.innerHTML = "";
+  if (!homeGoalContainer) return;
+  homeGoalContainer.innerHTML = "";
 
   const activeGoals = goals.filter(goal => goal.status !== "達成");
 
@@ -36,7 +34,7 @@ function renderGoals() {
         </span>
       </div>
     `;
-    goalContainer.appendChild(div);
+    homeGoalContainer.appendChild(div);
   });
 }
 
@@ -65,35 +63,49 @@ function editGoal(id) {
   window.location.href = `goals-edit.html`;
 }
 
-// AI提案ボタン押下処理
-async function generateAiSuggestion() {
-  const title = document.getElementById("goalTitle")?.value;
-  const category = document.getElementById("goalCategory")?.value;
+window.generateAiSuggestion = async function () {
+  const title = document.getElementById("goalTitle")?.value.trim();
+  const category = document.getElementById("goalCategory")?.value.trim();
   const deadline = document.getElementById("goalDeadline")?.value;
+  const type = document.getElementById("goalType")?.value; // 存在前提ならOK
 
   if (!title || !category || !deadline) {
-    alert("目標のタイトル・カテゴリ・締切を入力してください。");
+    alert("目標タイトル、カテゴリ、締め切りをすべて入力してください。");
     return;
   }
 
+  const userPrompt = `
+あなたは目標達成の専門家です。
+以下の目標に対して、達成に向けた現実的で効果的なアドバイスや取り組み方を提案してください。
+
+【目標タイトル】：${title}
+【カテゴリ】：${category}
+【締め切り】：${deadline}
+
+提案は箇条書きで3つ以内にまとめてください。
+`;
+
   const suggestionArea = document.getElementById("aiSuggestionResult");
-  suggestionArea.innerText = "提案を生成中...";
+  suggestionArea.textContent = "提案を生成中...";
 
   try {
     const response = await fetch("http://localhost:3001/goal-advice", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({
-    userPrompt: `目標: ${title}\nカテゴリ: ${category}\n締切: ${deadline} に向けた目標達成のアドバイスをください。`
-  })
-});
-const data = await response.json();
-suggestionArea.innerText = data.reply || "提案を取得できませんでした。";
-  } catch (e) {
-    suggestionArea.innerText = "エラーが発生しました。";
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userPrompt })
+    });
+
+    const data = await response.json();
+    suggestionArea.innerHTML = `<pre style="white-space:pre-wrap;">${data.reply}</pre>`;
+  } catch (error) {
+    console.error("AI提案エラー:", error);
+    suggestionArea.innerHTML = "<span style='color:red;'>AI提案の取得に失敗しました。</span>";
   }
-}
+};
 
 document.addEventListener("DOMContentLoaded", () => {
-  renderGoals();
+  // URLが index.html で終わっている場合だけ描画する
+  if (window.location.pathname.endsWith("index.html")) {
+    renderGoals();
+  }
 });

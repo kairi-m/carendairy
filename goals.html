@@ -14,7 +14,6 @@
       <h2>目標を追加</h2>
       <label for="goalType">目標タイプ:</label>
       <select id="goalType" onchange="switchGoalTypeForm()">
-        <option value="quantitative">定量（時間/回数）</option>
         <option value="checklist">チェックリスト</option>
         <option value="free">自由記述</option>
       </select>
@@ -39,23 +38,7 @@
       const type = document.getElementById("goalType").value;
       let html = '';
 
-      if (type === "quantitative") {
-        html = `
-          <input type="text" id="goalTitle" placeholder="目標タイトル">
-          <input type="text" id="goalCategory" placeholder="カテゴリ（例：学習）">
-          <label for="goalType">締め切り</label>
-          <input type="date" id="goalDeadline">
-          <button onclick="generateAiSuggestion()" class="button">💡 AIからの提案</button>
-          <div id="aiSuggestionResult" style="margin-top: 1em; font-size: 0.95rem;"></div>
-          <label for="goalSelection">目標への指標</label>
-          <select id="goalTargetType">
-            <option value="時間">時間</option>
-            <option value="回数">回数</option>
-          </select>
-          <input type="number" id="goalTargetValue" placeholder="目標値（合計）">
-          <button class="button" onclick="addQuantitativeGoal()">追加</button>
-        `;
-      } else if (type === "checklist") {
+      if (type === "checklist") {
         html = `
           <input type="text" id="goalTitle" placeholder="目標タイトル">
           <input type="text" id="goalCategory" placeholder="カテゴリ（例：就職）">
@@ -63,7 +46,7 @@
           <input type="date" id="goalDeadline">
           <button onclick="generateAiSuggestion()" class="button">💡 AIからの提案</button>
           <div id="aiSuggestionResult" style="margin-top: 1em; font-size: 0.95rem;"></div>
-          <textarea id="goalChecklistItems" placeholder="ステップを改行で入力（例：\n履歴書を書く\nテストを受ける\n面接を申し込む）"></textarea>
+          <textarea id="goalChecklistItems" placeholder="ステップを改行で入力\n<例>\n1.履歴書を書く\n2.テストを受ける\n3.面接を申し込む"></textarea>
           <button class="button" onclick="addChecklistGoal()">追加</button>
         `;
       } else if (type === "free") {
@@ -78,9 +61,10 @@
           <button class="button" onclick="addFreeGoal()">追加</button>
         `;
       }
-
       container.innerHTML = html;
     }
   </script>
+  <script src="goals.js"></script>
+  <script src="goals-index.js"></script>
 </body>
 </html>
