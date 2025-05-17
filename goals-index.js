@@ -24,14 +24,19 @@ function renderGoals() {
     }
 
     div.innerHTML = `
-      <div class="goal-row" style="display: flex; align-items: center; gap: 40px; margin-bottom: 20px;">
-        <span class="goal-title" style="flex: 2; font-size: 1.2rem; font-weight: bold; color: #2c3e50;">${goal.title}</span>
-        <span class="goal-progress" style="flex: 1; font-size: 1rem; text-align: center;">達成率: <strong>${percent}%</strong></span>
-        <span class="goal-actions" style="flex: 2; display: flex; justify-content: flex-end; gap: 12px;">
-          <button class="delete" onclick="deleteGoal(${goal.id})">削除</button>
-          <button class="delete" onclick="editGoal(${goal.id})">編集</button>
-          <button class="delete" onclick="markAsAchieved(${goal.id}, ${percent})">達成</button>
-        </span>
+      <div class="goal-row" style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px;">
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+          <span class="goal-title" style="font-size: 1.2rem; font-weight: bold; color: #2c3e50;">${goal.title}</span>
+          <span class="goal-progress" style="font-size: 1rem;">達成率: <strong>${percent}%</strong></span>
+        </div>
+        <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.95rem; color: #555;">
+          <span>締切：${goal.deadline}</span>
+          <span class="goal-actions" style="display: flex; gap: 8px;">
+            <button class="delete" onclick="deleteGoal(${goal.id})">削除</button>
+            <button class="delete" onclick="editGoal(${goal.id})">編集</button>
+            <button class="delete" onclick="markAsAchieved(${goal.id}, ${percent})">達成</button>
+          </span>
+        </div>
       </div>
     `;
     homeGoalContainer.appendChild(div);
