@@ -164,6 +164,19 @@ td:hover {
   margin-top: 0;
 }
 
+#homeGoalsSection{
+  background: #ffffff;
+  border: 1px solid #ccc;
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.05);
+}
+
+#homeGoalsSection h2{
+  margin-top: 10px;
+}
+
 #aiSearchSection {
   background: #ffffff;
   border: 1px solid #ccc;
